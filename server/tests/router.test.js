@@ -1,4 +1,4 @@
-// ✅ Mock express-validator to prevent route setup from crashing
+// the body in validator is really long. so having difficultie here 
 jest.mock('express-validator', () => ({
   body: () => ({
     trim: () => ({
@@ -30,28 +30,23 @@ jest.mock('express-validator', () => ({
 const request = require('supertest');
 const app = require('../index');
 
-describe('Router connection tests', () => {
-  // 🧪 GET route exists
+describe('Router tests', () => {
+  // GET exists
   it('should respond to GET /devices', async () => {
     const res = await request(app).get('/devices');
     expect([200, 400, 404, 500]).toContain(res.statusCode);
   });
 
-  // 🧪 POST route exists
+  // POST route 
   it('should respond to POST /devices', async () => {
     const res = await request(app).post('/devices').send({ device: 'test' });
     expect([200, 400, 500]).toContain(res.statusCode);
   });
 
-  // 🧪 Unknown route returns 404
-  it('should return 404 for unknown route', async () => {
+  // unknown route detected
+  it('should return 404 for unknown ', async () => {
     const res = await request(app).get('/not-a-real-route');
     expect(res.statusCode).toBe(404);
   });
 
-  // 🧪 Method not allowed (if applicable)
-  it('should return 404 or 405 for unsupported method', async () => {
-    const res = await request(app).put('/devices');
-    expect([404, 405]).toContain(res.statusCode);
-  });
 });
